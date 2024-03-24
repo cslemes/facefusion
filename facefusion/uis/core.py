@@ -61,38 +61,33 @@ def register_ui_component(name : ComponentName, component: Component) -> None:
 	UI_COMPONENTS[name] = component
 
 
+# def launch() -> None:
+# 	ui_layouts_total = len(facefusion.globals.ui_layouts)
+# 	with gradio.Blocks(theme = get_theme(), css = get_css(), title = metadata.get('name') + ' ' + metadata.get('version')) as ui:
+# 		for ui_layout in facefusion.globals.ui_layouts:
+# 			ui_layout_module = load_ui_layout_module(ui_layout)
+# 			if ui_layout_module.pre_render():
+# 				if ui_layouts_total > 1:
+# 					with gradio.Tab(ui_layout):
+# 						ui_layout_module.render()
+# 						ui_layout_module.listen()
+# 				else:
+# 					ui_layout_module.render()
+# 					ui_layout_module.listen()
+
+# 	for ui_layout in facefusion.globals.ui_layouts:
+# 	ui_layout_module = load_ui_layout_module(ui_layout)
+# 	ui_layout_module.run(ui)
+
+
 def launch() -> None:
-	ui_layouts_total = len(facefusion.globals.ui_layouts)
-	with gradio.Blocks(theme = get_theme(), css = get_css(), title = metadata.get('name') + ' ' + metadata.get('version')) as ui:
+	with gradio.Blocks(theme = get_theme(), title = metadata.get('name') + ' ' + metadata.get('version')) as ui:
 		for ui_layout in facefusion.globals.ui_layouts:
 			ui_layout_module = load_ui_layout_module(ui_layout)
-			if ui_layout_module.pre_render():
-				if ui_layouts_total > 1:
-					with gradio.Tab(ui_layout):
-						ui_layout_module.render()
-						ui_layout_module.listen()
-				else:
-					ui_layout_module.render()
-					ui_layout_module.listen()
-
-	# for ui_layout in facefusion.globals.ui_layouts:
-	# 	ui_layout_module = load_ui_layout_module(ui_layout)
-	# 	ui_layout_module.run(ui)
-    iface = gradio.Interface(
-        fn=ui,
-        layout="blocks" if ui_layouts_total > 1 else "unaligned",
-        capture_session=True,
-        server_name="localhost",
-        server_port=None,
-        share=True,
-        allow_screenshot=True,
-        allow_flagging=True,
-        allow_remote_access=True,
-        allow_files=False,
-    )
-    iface.launch()
-
-
+			ui_layout_module.pre_check()
+			ui_layout_module.render()
+			ui_layout_module.listen()
+	ui.launch(show_api = False, share = True)
 
 		
 
