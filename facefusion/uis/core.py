@@ -75,9 +75,25 @@ def launch() -> None:
 					ui_layout_module.render()
 					ui_layout_module.listen()
 
-	for ui_layout in facefusion.globals.ui_layouts:
-		ui_layout_module = load_ui_layout_module(ui_layout)
-		ui_layout_module.run(ui)
+	# for ui_layout in facefusion.globals.ui_layouts:
+	# 	ui_layout_module = load_ui_layout_module(ui_layout)
+	# 	ui_layout_module.run(ui)
+    iface = gradio.Interface(
+        fn=ui,
+        layout="blocks" if ui_layouts_total > 1 else "unaligned",
+        capture_session=True,
+        server_name="localhost",
+        server_port=None,
+        share=True,
+        allow_screenshot=True,
+        allow_flagging=True,
+        allow_remote_access=True,
+        allow_files=False,
+    )
+    iface.launch()
+
+
+
 		
 
 
